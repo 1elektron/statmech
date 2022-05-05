@@ -1,0 +1,80 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+
+\PYG{c+c1}{\PYGZsh{}constants actual}
+
+\PYG{n}{h} \PYG{o}{=} \PYG{l+m+mf}{6.626}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{34}\PYG{p}{))} \PYG{c+c1}{\PYGZsh{} J\PYGZhy{}s}
+\PYG{n}{k} \PYG{o}{=} \PYG{l+m+mf}{1.381}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{23}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} J/K}
+\PYG{n}{m} \PYG{o}{=} \PYG{l+m+mi}{32}\PYG{o}{*}\PYG{l+m+mf}{1.66}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{27}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} kg}
+\PYG{n}{pi}\PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{pi}
+\PYG{n}{e} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}
+\PYG{n}{T1} \PYG{o}{=} \PYG{l+m+mi}{200} \PYG{c+c1}{\PYGZsh{} K}
+\PYG{n}{T2} \PYG{o}{=} \PYG{l+m+mi}{300} \PYG{c+c1}{\PYGZsh{} K}
+\PYG{n}{T3} \PYG{o}{=} \PYG{l+m+mi}{600} \PYG{c+c1}{\PYGZsh{} K}
+
+\PYG{k}{def} \PYG{n+nf}{maxwell\PYGZus{}speed\PYGZus{}dist}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,}\PYG{n}{T}\PYG{p}{):}
+    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{} }
+\PYG{l+s+sd}{    v : speed}
+\PYG{l+s+sd}{    T: temprature}
+\PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
+    \PYG{n}{v0} \PYG{o}{=} \PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{pi}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{power}\PYG{p}{(} \PYG{p}{(}\PYG{n}{m} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{pi}\PYG{o}{*}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{p}{)} \PYG{p}{)} \PYG{p}{,}\PYG{l+m+mi}{3}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{v0} \PYG{o}{*} \PYG{p}{(}\PYG{n}{v}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)} \PYG{o}{*}  \PYG{n}{e}\PYG{o}{**}\PYG{p}{(} \PYG{o}{\PYGZhy{}}\PYG{n}{m}\PYG{o}{*}\PYG{p}{(}\PYG{n}{v}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{o}{/}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{p}{)} \PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{integrate\PYGZus{}n\PYGZus{}sort}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{):}
+    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{l+s+sd}{    Intergrate and sort}
+\PYG{l+s+sd}{    x : array of x values, not used here}
+\PYG{l+s+sd}{    y : array of y values, to be integrated}
+
+\PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
+    \PYG{n}{dx} \PYG{o}{=} \PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+    \PYG{n}{y\PYGZus{}avg} \PYG{o}{=} \PYG{l+m+mi}{0} 
+    \PYG{n}{y\PYGZus{}sq\PYGZus{}avg} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}
+    \PYG{n}{y\PYGZus{}new} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{y\PYGZus{}max} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{max\PYGZus{}at} \PYG{o}{=} \PYG{l+m+mi}{0} \PYG{c+c1}{\PYGZsh{} store the index at whihc y is max}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n}{y}\PYG{p}{:}
+        \PYG{n}{y\PYGZus{}avg} \PYG{o}{=} \PYG{n}{y\PYGZus{}avg} \PYG{o}{+} \PYG{n}{x}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{*}\PYG{n}{i}\PYG{o}{*}\PYG{n}{dx}
+        \PYG{n}{y\PYGZus{}sq\PYGZus{}avg} \PYG{o}{=} \PYG{n}{y\PYGZus{}sq\PYGZus{}avg} \PYG{o}{+} \PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{o}{*}\PYG{n}{i}\PYG{o}{*}\PYG{n}{dx}
+
+        \PYG{n}{y\PYGZus{}new}\PYG{o}{=}  \PYG{n}{i}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{y\PYGZus{}new}\PYG{o}{\PYGZgt{}}\PYG{n}{y\PYGZus{}max}\PYG{p}{):}
+            \PYG{n}{y\PYGZus{}max}\PYG{o}{=}\PYG{n}{y\PYGZus{}new}
+            \PYG{n}{max\PYGZus{}at} \PYG{o}{=} \PYG{n}{j}
+        
+        \PYG{n}{j} \PYG{o}{+=} \PYG{l+m+mi}{1}
+    \PYG{n}{v\PYGZus{}max} \PYG{o}{=} \PYG{n}{x}\PYG{p}{[}\PYG{n}{max\PYGZus{}at}\PYG{p}{]}
+    \PYG{n}{y\PYGZus{}rms} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{y\PYGZus{}sq\PYGZus{}avg}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{y\PYGZus{}avg}\PYG{p}{,}\PYG{n}{y\PYGZus{}rms}\PYG{p}{,}\PYG{n}{v\PYGZus{}max}\PYG{p}{,}\PYG{n}{max\PYGZus{}at}
+
+
+\PYG{c+c1}{\PYGZsh{} Calculate arrays}
+\PYG{n}{v\PYGZus{}array} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{2000}\PYG{p}{,}\PYG{l+m+mi}{200}\PYG{p}{)}
+\PYG{n}{f\PYGZus{}2} \PYG{o}{=} \PYG{n}{maxwell\PYGZus{}speed\PYGZus{}dist}\PYG{p}{(} \PYG{n}{v\PYGZus{}array}\PYG{p}{,}\PYG{n}{T2}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} dist of speed}
+\PYG{n}{f\PYGZus{}3} \PYG{o}{=} \PYG{n}{maxwell\PYGZus{}speed\PYGZus{}dist}\PYG{p}{(} \PYG{n}{v\PYGZus{}array}\PYG{p}{,}\PYG{n}{T3}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} dist of speed}
+
+\PYG{c+c1}{\PYGZsh{} find avg, rms and max velocity}
+\PYG{n}{v\PYGZus{}avg} \PYG{p}{,} \PYG{n}{v\PYGZus{}rms} \PYG{p}{,}\PYG{n}{v\PYGZus{}max} \PYG{p}{,} \PYG{n}{i} \PYG{o}{=} \PYG{n}{integrate\PYGZus{}n\PYGZus{}sort}\PYG{p}{(}\PYG{n}{v\PYGZus{}array}\PYG{p}{,}\PYG{n}{f\PYGZus{}2}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}At T = 300K\PYGZsq{}}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}v\PYGZus{}avg = \PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{v\PYGZus{}avg}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{),}\PYG{l+s+s1}{\PYGZsq{}v\PYGZus{}rms=\PYGZsq{}}\PYG{p}{,}\PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{v\PYGZus{}rms}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{),}\PYG{l+s+s1}{\PYGZsq{}v\PYGZus{}max=\PYGZsq{}}\PYG{p}{,}\PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{v\PYGZus{}max}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{))}
+
+\PYG{n}{v\PYGZus{}avg} \PYG{p}{,} \PYG{n}{v\PYGZus{}rms} \PYG{p}{,}\PYG{n}{v\PYGZus{}max} \PYG{p}{,} \PYG{n}{i} \PYG{o}{=} \PYG{n}{integrate\PYGZus{}n\PYGZus{}sort}\PYG{p}{(}\PYG{n}{v\PYGZus{}array}\PYG{p}{,}\PYG{n}{f\PYGZus{}3}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}At T = 600K\PYGZsq{}}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}v\PYGZus{}avg = \PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{v\PYGZus{}avg}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{),}\PYG{l+s+s1}{\PYGZsq{}v\PYGZus{}rms=\PYGZsq{}}\PYG{p}{,}\PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{v\PYGZus{}rms}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{),}\PYG{l+s+s1}{\PYGZsq{}v\PYGZus{}max=\PYGZsq{}}\PYG{p}{,}\PYG{n+nb}{round}\PYG{p}{(}\PYG{n}{v\PYGZus{}max}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{))}
+
+\PYG{n}{eqn} \PYG{o}{=} \PYG{l+s+sa}{r}\PYG{l+s+s1}{\PYGZsq{}\PYGZdl{} \PYGZbs{}left( \PYGZbs{}frac}\PYG{l+s+si}{\PYGZob{}m\PYGZcb{}}\PYG{l+s+s1}{\PYGZob{}2\PYGZbs{}pi k\PYGZus{}B T\PYGZcb{} \PYGZbs{}right)\PYGZca{}\PYGZob{}3/2\PYGZcb{} 4 \PYGZbs{}pi v\PYGZca{}2 e\PYGZca{}\PYGZob{}\PYGZhy{}mv\PYGZca{}2/k\PYGZus{}B T\PYGZcb{} \PYGZdl{}\PYGZsq{}}
+\PYG{c+c1}{\PYGZsh{} plt.text()}
+\PYG{c+c1}{\PYGZsh{}plot}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(} \PYG{n}{v\PYGZus{}array}\PYG{p}{,} \PYG{n}{f\PYGZus{}2}  \PYG{p}{,}\PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}300K\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(} \PYG{n}{v\PYGZus{}array}\PYG{p}{,} \PYG{n}{f\PYGZus{}3}  \PYG{p}{,}\PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}600K\PYGZsq{}}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+sa}{r}\PYG{l+s+s1}{\PYGZsq{}Speed \PYGZdl{}(m/s)\PYGZdl{}\PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{14}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+sa}{r}\PYG{l+s+s1}{\PYGZsq{}Probablity Density \PYGZdl{}(s/m)\PYGZdl{}\PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{14}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+sa}{r}\PYG{l+s+s1}{\PYGZsq{}Maxwell Speed Dist.  \PYGZdl{}\PYGZbs{}left( \PYGZbs{}frac}\PYG{l+s+si}{\PYGZob{}m\PYGZcb{}}\PYG{l+s+s1}{\PYGZob{}2\PYGZbs{}pi k\PYGZus{}B T\PYGZcb{} \PYGZbs{}right)\PYGZca{}\PYGZob{}3/2\PYGZcb{} 4 \PYGZbs{}pi v\PYGZca{}2 e\PYGZca{}\PYGZob{}\PYGZhy{}mv\PYGZca{}2/k\PYGZus{}B T\PYGZcb{}\PYGZdl{} for \PYGZdl{}O\PYGZus{}2\PYGZdl{} \PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{16}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{grid}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{,}\PYG{n}{ls}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{(}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{14}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

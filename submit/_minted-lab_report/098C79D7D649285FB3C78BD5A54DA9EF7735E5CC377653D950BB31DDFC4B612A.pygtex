@@ -1,0 +1,107 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} using fermi dirac statistic}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+
+\PYG{c+c1}{\PYGZsh{}constants , 1eV = e * (1 J)}
+\PYG{n}{k} \PYG{o}{=} \PYG{l+m+mf}{1.381}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{23}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} J/K}
+\PYG{n}{e} \PYG{o}{=} \PYG{l+m+mf}{1.602} \PYG{o}{*} \PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{19}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} coulomb}
+
+\PYG{c+c1}{\PYGZsh{} create temperature points}
+\PYG{n}{Tmin} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{n}{Tmax} \PYG{o}{=} \PYG{l+m+mi}{500}
+\PYG{n}{dT} \PYG{o}{=} \PYG{l+m+mf}{0.1}
+\PYG{n}{T} \PYG{o}{=}  \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{n}{Tmin}\PYG{p}{,}\PYG{n}{Tmax} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{dT}\PYG{p}{)}
+
+\PYG{n}{N} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{([}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{3}\PYG{p}{])} \PYG{c+c1}{\PYGZsh{} number of paticles }
+
+\PYG{n}{n} \PYG{o}{=} \PYG{l+m+mi}{3}  \PYG{c+c1}{\PYGZsh{} number of energy levels}
+\PYG{n}{dE} \PYG{o}{=} \PYG{l+m+mf}{0.01} \PYG{c+c1}{\PYGZsh{} ev}
+\PYG{n}{E0} \PYG{o}{=} \PYG{l+m+mi}{0} \PYG{c+c1}{\PYGZsh{} ground state energy}
+\PYG{n}{E1} \PYG{o}{=} \PYG{n}{E0} \PYG{o}{+} \PYG{n}{dE} \PYG{c+c1}{\PYGZsh{} first state nergy}
+\PYG{n}{E2} \PYG{o}{=} \PYG{n}{E0} \PYG{o}{+} \PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{dE} \PYG{c+c1}{\PYGZsh{} second state nergy}
+
+\PYG{c+c1}{\PYGZsh{} Z\PYGZus{}list to store value of partition fucntion}
+\PYG{c+c1}{\PYGZsh{} at differnt temperatures for differnt number of}
+\PYG{c+c1}{\PYGZsh{} particles}
+
+\PYG{n}{Z\PYGZus{}list} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{((}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{N}\PYG{p}{),}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{T}\PYG{p}{)))} \PYG{c+c1}{\PYGZsh{} row,col}
+
+
+\PYG{k}{def} \PYG{n+nf}{Z1}\PYG{p}{(}\PYG{n}{t}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} partition funciton for 1 particle and 3 levels}
+    \PYG{c+c1}{\PYGZsh{} t is temp}
+    \PYG{n}{b} \PYG{o}{=} \PYG{p}{(}\PYG{n}{e}\PYG{o}{/}\PYG{n}{k}\PYG{p}{)}\PYG{o}{/}\PYG{n}{t}
+    \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{E0}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)} \PYG{o}{+} \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{E1}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)} \PYG{o}{+} \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{E2}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{Z2}\PYG{p}{(}\PYG{n}{t}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} partitio function for 2 partilces and 3 levels}
+    \PYG{c+c1}{\PYGZsh{} t is temp}
+    \PYG{n}{b} \PYG{o}{=} \PYG{p}{(}\PYG{n}{e}\PYG{o}{/}\PYG{n}{k}\PYG{p}{)}\PYG{o}{/}\PYG{n}{t}
+    \PYG{k}{return} \PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{E0} \PYG{o}{+} \PYG{n}{E1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)} \PYG{o}{+} \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{E0} \PYG{o}{+} \PYG{n}{E2}\PYG{p}{)}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)} \PYG{o}{+} 
+            \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{E1} \PYG{o}{+} \PYG{n}{E2}\PYG{p}{)}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)} \PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{Z3}\PYG{p}{(}\PYG{n}{t}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} partitio function for 3 partilces and 3 levels}
+    \PYG{c+c1}{\PYGZsh{} t is temp}
+    \PYG{n}{b} \PYG{o}{=} \PYG{p}{(}\PYG{n}{e}\PYG{o}{/}\PYG{n}{k}\PYG{p}{)}\PYG{o}{/}\PYG{n}{t}
+    \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{e}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{E0} \PYG{o}{+} \PYG{n}{E1} \PYG{o}{+} \PYG{n}{E2} \PYG{p}{)}\PYG{o}{*}\PYG{n}{b}\PYG{p}{)} 
+
+\PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{T}\PYG{p}{)):}
+
+    \PYG{c+c1}{\PYGZsh{} row0 stores partition function for 1 particle}
+    \PYG{c+c1}{\PYGZsh{} row1 for 2 paticles and row2 for 3 .}
+    \PYG{n}{Z\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n}{Z1}\PYG{p}{(}\PYG{n}{T}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])}
+    \PYG{n}{Z\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n}{Z2}\PYG{p}{(}\PYG{n}{T}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])}
+    \PYG{n}{Z\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]} \PYG{o}{=} \PYG{n}{Z3}\PYG{p}{(}\PYG{n}{T}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])}
+
+
+\PYG{c+c1}{\PYGZsh{} Energy}
+\PYG{n}{T1} \PYG{o}{=} \PYG{n}{T}\PYG{p}{[:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}
+\PYG{n}{U} \PYG{o}{=} \PYG{n}{k}\PYG{o}{*}\PYG{n}{T1}\PYG{o}{*}\PYG{n}{T1}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{diff}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{log}\PYG{p}{(}\PYG{n}{Z\PYGZus{}list}\PYG{p}{))}\PYG{o}{/}\PYG{n}{dT}
+
+\PYG{c+c1}{\PYGZsh{} specific heat capacity}
+\PYG{n}{T2} \PYG{o}{=} \PYG{n}{T1}\PYG{p}{[:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}
+\PYG{n}{Cv} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{diff}\PYG{p}{(}\PYG{n}{U}\PYG{p}{)}\PYG{o}{/}\PYG{n}{dT}
+
+\PYG{c+c1}{\PYGZsh{} Helomholtz free energy }
+\PYG{n}{F} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{log}\PYG{p}{(}\PYG{n}{Z\PYGZus{}list}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} enrtopy}
+\PYG{n}{S} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{np}\PYG{o}{.}\PYG{n}{diff}\PYG{p}{(}\PYG{n}{F}\PYG{p}{)}\PYG{o}{/}\PYG{n}{dT}
+
+\PYG{c+c1}{\PYGZsh{} plot}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}T(K)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Average Energy (J)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(} \PYG{n}{T1}\PYG{p}{,} \PYG{n}{U}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N(particle) =1  \PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(} \PYG{n}{T1}\PYG{p}{,} \PYG{n}{U}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N=2\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(} \PYG{n}{T1}\PYG{p}{,} \PYG{n}{U}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N=3\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}T(K)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Heat Capactiy (J/K)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T2}\PYG{p}{,}\PYG{n}{Cv}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N(particle) =1\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T2}\PYG{p}{,}\PYG{n}{Cv}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N=2\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T2}\PYG{p}{,}\PYG{n}{Cv}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N=3\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}T(K)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{} Entropy (J/K)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T1}\PYG{p}{,}\PYG{n}{S}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N(particle) =1\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T1}\PYG{p}{,}\PYG{n}{S}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N=2\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T1}\PYG{p}{,}\PYG{n}{S}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{p}{,} \PYG{n}{label} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}N=3\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{l+m+mi}{5}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}T(K)\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{} Partiton  Function Z\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,}\PYG{n}{Z\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{n}{label} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}N(particle) =1\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,}\PYG{n}{Z\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{label} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}N =2\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,}\PYG{n}{Z\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{],} \PYG{n}{label} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}N =3\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

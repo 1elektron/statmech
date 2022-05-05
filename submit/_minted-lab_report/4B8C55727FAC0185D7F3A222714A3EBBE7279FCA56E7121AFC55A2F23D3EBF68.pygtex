@@ -1,0 +1,71 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{}To do:}
+\PYG{c+c1}{\PYGZsh{} Plot enrgy/vol\PYGZhy{}frq}
+\PYG{c+c1}{\PYGZsh{} Plot energy/vol}
+
+\PYG{k+kn}{from} \PYG{n+nn}{cProfile} \PYG{k+kn}{import} \PYG{n}{label}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{import} \PYG{n+nn}{scipy} \PYG{k}{as} \PYG{n+nn}{sp}
+
+\PYG{c+c1}{\PYGZsh{}constants actual}
+\PYG{n}{c} \PYG{o}{=} \PYG{l+m+mi}{3}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{8} \PYG{c+c1}{\PYGZsh{} m/s}
+\PYG{n}{h} \PYG{o}{=} \PYG{l+m+mf}{6.626}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{34}\PYG{p}{))} \PYG{c+c1}{\PYGZsh{} J\PYGZhy{}s}
+\PYG{n}{k} \PYG{o}{=} \PYG{l+m+mf}{1.381}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{23}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}J/K}
+\PYG{n}{lamb\PYGZus{}max} \PYG{o}{=} \PYG{l+m+mi}{2000} \PYG{c+c1}{\PYGZsh{} nm }
+\PYG{n}{nu\PYGZus{}max} \PYG{o}{=} \PYG{l+m+mi}{10}
+\PYG{n}{beta} \PYG{o}{=} \PYG{n}{h}\PYG{o}{*}\PYG{n}{c}\PYG{o}{/}\PYG{n}{k}
+\PYG{n}{T1} \PYG{o}{=} \PYG{l+m+mi}{2000} \PYG{c+c1}{\PYGZsh{} K}
+\PYG{n}{T2} \PYG{o}{=} \PYG{l+m+mi}{4000} \PYG{c+c1}{\PYGZsh{} K}
+\PYG{n}{T3} \PYG{o}{=} \PYG{l+m+mi}{6000} \PYG{c+c1}{\PYGZsh{} K}
+
+
+
+\PYG{k}{def}  \PYG{n+nf}{planck\PYGZus{}dist\PYGZus{}lamb}\PYG{p}{(}\PYG{n}{lamb}\PYG{p}{,}\PYG{n}{T}\PYG{p}{):}
+    \PYG{n}{cons} \PYG{o}{=} \PYG{l+m+mi}{8}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{pi}\PYG{o}{*}\PYG{n}{h}
+    \PYG{k}{return} \PYG{n}{cons}\PYG{o}{/}\PYG{p}{((}\PYG{n}{lamb}\PYG{o}{**}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{n}{h}\PYG{o}{*}\PYG{n}{c}\PYG{o}{/}\PYG{p}{(}\PYG{n}{lamb}\PYG{o}{*}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{p}{))}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{))}
+
+\PYG{k}{def}  \PYG{n+nf}{planck\PYGZus{}dist\PYGZus{}nu}\PYG{p}{(}\PYG{n}{nu}\PYG{p}{,}\PYG{n}{T}\PYG{p}{):}
+    \PYG{n}{cons} \PYG{o}{=} \PYG{l+m+mi}{8}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{pi}\PYG{o}{*}\PYG{n}{h}
+    \PYG{k}{return} \PYG{p}{(}\PYG{n}{cons}\PYG{o}{*}\PYG{p}{(}\PYG{n}{nu}\PYG{o}{/}\PYG{n}{c}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{o}{/}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{n}{h}\PYG{o}{*}\PYG{n}{nu}\PYG{o}{/}\PYG{p}{(}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{p}{))}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}
+
+\PYG{k}{def} \PYG{n+nf}{r\PYGZus{}j\PYGZus{}dist\PYGZus{}nu}\PYG{p}{(}\PYG{n}{nu}\PYG{p}{,}\PYG{n}{T}\PYG{p}{):}
+    \PYG{k}{return} \PYG{p}{(}\PYG{l+m+mi}{8}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{pi}\PYG{o}{*}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{o}{*}\PYG{n}{nu}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{o}{/}\PYG{n}{c}\PYG{o}{**}\PYG{l+m+mi}{3}
+
+\PYG{k}{def} \PYG{n+nf}{wein\PYGZus{}dist\PYGZus{}nu}\PYG{p}{(}\PYG{n}{nu}\PYG{p}{,}\PYG{n}{T}\PYG{p}{):}
+    \PYG{n}{cons} \PYG{o}{=} \PYG{l+m+mi}{8}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{pi}\PYG{o}{*}\PYG{n}{h}
+    \PYG{k}{return} \PYG{p}{(}\PYG{n}{cons}\PYG{o}{*}\PYG{p}{(}\PYG{n}{nu}\PYG{o}{/}\PYG{n}{c}\PYG{p}{)}\PYG{o}{**}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{o}{/}\PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{n}{h}\PYG{o}{*}\PYG{n}{nu}\PYG{o}{/}\PYG{p}{(}\PYG{n}{k}\PYG{o}{*}\PYG{n}{T}\PYG{p}{))}
+\PYG{c+c1}{\PYGZsh{} lamb\PYGZus{}array = np.linspace(10**\PYGZhy{}2,lamb\PYGZus{}max,1000)}
+
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}Placnck\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{nu\PYGZus{}array} \PYG{o}{=} \PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{14}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{l+m+mf}{0.001}\PYG{p}{,}\PYG{n}{nu\PYGZus{}max}\PYG{p}{,}\PYG{l+m+mi}{100}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlim}\PYG{p}{((}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{nu\PYGZus{}max}\PYG{p}{))}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylim}\PYG{p}{((}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{p}{))}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}Planck\PYGZsq{}s law\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} plt.plot(nu\PYGZus{}array/10**14,10**15*planck\PYGZus{}dist\PYGZus{}nu(nu\PYGZus{}array,T1))}
+\PYG{c+c1}{\PYGZsh{} plt.plot(nu\PYGZus{}array/10**14,10**15*planck\PYGZus{}dist\PYGZus{}nu(nu\PYGZus{}array,T2))}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{nu\PYGZus{}array}\PYG{o}{/}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{14}\PYG{p}{,}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{15}\PYG{o}{*}\PYG{n}{planck\PYGZus{}dist\PYGZus{}nu}\PYG{p}{(}\PYG{n}{nu\PYGZus{}array}\PYG{p}{,}\PYG{n}{T3}\PYG{p}{),}\PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Planck }\PYG{l+s+se}{\PYGZbs{}\PYGZsq{}}\PYG{l+s+s1}{ s Law\PYGZsq{}}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}Rayleigh\PYGZus{}jeans\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} plt.plot(nu\PYGZus{}array/10**14,10**15*r\PYGZus{}j\PYGZus{}dist\PYGZus{}nu(nu\PYGZus{}array,T1),ls=\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{})}
+\PYG{c+c1}{\PYGZsh{} plt.plot(nu\PYGZus{}array/10**14,10**15*r\PYGZus{}j\PYGZus{}dist\PYGZus{}nu(nu\PYGZus{}array,T2),ls=\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{})}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{nu\PYGZus{}array}\PYG{o}{/}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{14}\PYG{p}{,}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{15}\PYG{o}{*}\PYG{n}{r\PYGZus{}j\PYGZus{}dist\PYGZus{}nu}\PYG{p}{(}\PYG{n}{nu\PYGZus{}array}\PYG{p}{,}\PYG{n}{T3}\PYG{p}{),}\PYG{n}{ls}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,}\PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Rayleigh\PYGZhy{}Jeans Law\PYGZsq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}Wein\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} plt.plot(nu\PYGZus{}array/10**14,10**15*wein\PYGZus{}dist\PYGZus{}nu(nu\PYGZus{}array,T1),ls=\PYGZsq{}:\PYGZsq{})}
+\PYG{c+c1}{\PYGZsh{} plt.plot(nu\PYGZus{}array/10**14,10**15*wein\PYGZus{}dist\PYGZus{}nu(nu\PYGZus{}array,T2),ls=\PYGZsq{}:\PYGZsq{})}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{nu\PYGZus{}array}\PYG{o}{/}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{14}\PYG{p}{,}\PYG{l+m+mi}{10}\PYG{o}{**}\PYG{l+m+mi}{15}\PYG{o}{*}\PYG{n}{wein\PYGZus{}dist\PYGZus{}nu}\PYG{p}{(}\PYG{n}{nu\PYGZus{}array}\PYG{p}{,}\PYG{n}{T3}\PYG{p}{),}\PYG{n}{ls}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{,}\PYG{n}{label}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Weins}\PYG{l+s+se}{\PYGZbs{}\PYGZsq{}}\PYG{l+s+s1}{ Law\PYGZsq{}}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+
+\PYG{c+c1}{\PYGZsh{} plt.rcParams[\PYGZsq{}text.usetex\PYGZsq{}] = True}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{rcParams}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}font.size\PYGZsq{}}\PYG{p}{]} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}13\PYGZsq{}}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{grid}\PYG{p}{(}\PYG{k+kc}{True}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+sa}{r}\PYG{l+s+s1}{\PYGZsq{}\PYGZdl{}\PYGZbs{}nu 10\PYGZca{}\PYGZob{}\PYGZhy{}14\PYGZcb{}  \PYGZdl{} frequency\PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{14}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+sa}{r}\PYG{l+s+s1}{\PYGZsq{}\PYGZdl{}u(\PYGZbs{}nu ,T) \PYGZbs{}cdot 10\PYGZca{}}\PYG{l+s+si}{\PYGZob{}15\PYGZcb{}}\PYG{l+s+s1}{  \PYGZbs{} \PYGZbs{} J / \PYGZob{}m\PYGZca{}3 s\PYGZcb{} \PYGZdl{}  \PYGZsq{}}\PYG{p}{,}\PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{14}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}
